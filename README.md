@@ -1,6 +1,10 @@
 # DiscoGo Service Discovery Tool
 
-DiscoGo is a service discovery tool built using Go and Memcached. It aims to provide a reliable way to discover services in a distributed environment. This README provides an overview of the project, setup instructions, and usage guidelines.
+<p align="center">
+  <img src="discoGo.png" alt="DiscoGo Logo" width="200"/>
+</p>
+
+DiscoGo is a service discovery tool built with Go and Memcached. It provides a simple, reliable, and configurable HTTP API for service registration, deregistration, and discovery in distributed environments.
 
 ## Table of Contents
 
@@ -8,56 +12,79 @@ DiscoGo is a service discovery tool built using Go and Memcached. It aims to pro
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
+- [API Endpoints](#api-endpoints)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Features
 
-- Service discovery using Memcached
-- Environment variable configuration
-- Logging support for monitoring and debugging
-- Simple HTTP API for service interactions
+- Memcached-based service discovery
+- Easy configuration via environment variables (`.env` support)
+- Colored and detailed logging (configurable)
+- Standardized JSON responses for all endpoints
+- Health, version, registration, deregistration, and discovery HTTP API
 
 ## Installation
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/microsoft/vscode-remote-try-go.git
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/your-username/discogo.git
    cd discogo
    ```
 
-2. Ensure you have Go installed on your machine. You can download it from [golang.org](https://golang.org/dl/).
+2. **Install Go** (if not already installed):  
+   [Download Go](https://golang.org/dl/)
 
-3. Install the necessary dependencies:
-   ```
+3. **Install dependencies:**
+   ```sh
    go mod tidy
    ```
 
 ## Configuration
 
-Before running the application, you need to set up the environment variables. Create a `.env` file in the root directory with the following content:
+Create a `.env` file in the root directory with the following content:
 
 ```
-SERVER_IP=<your_server_ip>
+DISCOGO_NAME=discoGo
+DISCOGO_VERSION=1.0.0
+DISCOGO_VERSION_NAME=Astrid
+DISCOGO_LOG_COLOR=true
+
+DISCOGO_HTTP_HOST=localhost
+DISCOGO_HTTP_PORT=8080
+
+MEMCACHED_HOST=127.0.0.1
+MEMCACHED_PORT=11211
 ```
 
-Replace `<your_server_ip>` with the actual IP address of your server.
+Adjust the values as needed for your environment.
 
 ## Usage
 
-To start the service discovery tool, run the following command:
+To start the service:
 
-```
+```sh
 go run cmd/main.go
 ```
 
-The application will attempt to read the server IP address from the `.env` file. If it fails to retrieve the IP address, it will log an error message and exit.
+The application will read configuration from the `.env` file. If required variables are missing, it will log an error and exit.
 
-The tool exposes an HTTP API for service discovery. You can interact with the API using tools like `curl` or Postman.
+## API Endpoints
+
+| Method | Endpoint      | Description                |
+|--------|--------------|----------------------------|
+| GET    | /health      | Health check               |
+| GET    | /version     | Returns version info       |
+| GET    | /heartbeat   | Service uptime             |
+| GET    | /discover    | Discover registered service|
+| POST   | /register    | Register a new service     |
+| POST   | /deregister  | Deregister a service       |
+
+All responses follow a standard JSON structure.
 
 ## Contributing
 
-Contributions are welcome! If you have suggestions for improvements or new features, please open an issue or submit a pull request.
+Contributions are welcome! Please open an issue or submit a pull request for improvements or new features.
 
 ## License
 
