@@ -6,6 +6,9 @@
 
 DiscoGo is a service discovery tool built with Go and Memcached. It provides a simple, reliable, and configurable HTTP API for service registration, deregistration, and discovery in distributed environments.
 
+> **Note:**  
+> DiscoGo requires a running Memcached server. Please ensure Memcached is installed and accessible before starting the application.
+
 ## Table of Contents
 
 - [Features](#features)
@@ -28,7 +31,7 @@ DiscoGo is a service discovery tool built with Go and Memcached. It provides a s
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/your-username/discogo.git
+   git clone https://github.com/tahakara/discogo.git
    cd discogo
    ```
 
@@ -40,9 +43,20 @@ DiscoGo is a service discovery tool built with Go and Memcached. It provides a s
    go mod tidy
    ```
 
+4. **Install and run Memcached:**  
+   Make sure Memcached is running and accessible at the address specified in your `.env` file (default: `127.0.0.1:11211`).  
+   [Memcached Download & Docs](https://memcached.org/)
+
 ## Configuration
 
-Create a `.env` file in the root directory with the following content:
+A sample production environment file is provided as `.env-prod`.  
+**To configure the application, rename `.env-prod` to `.env` and adjust the values as needed:**
+
+```sh
+mv .env-prod .env
+```
+
+Example `.env` content:
 
 ```
 DISCOGO_NAME=discoGo
@@ -56,8 +70,6 @@ DISCOGO_HTTP_PORT=8080
 MEMCACHED_HOST=127.0.0.1
 MEMCACHED_PORT=11211
 ```
-
-Adjust the values as needed for your environment.
 
 ## Usage
 
