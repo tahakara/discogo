@@ -2,7 +2,7 @@
 
 DiscoGo is a service discovery and health monitoring system written in Go. It provides RESTful APIs for service registration, heartbeat, discovery, and deregistration, using Redis as a backend.
 
-![DiscoGo Architecture](./shared/discogo-architecture.png)
+![DiscoGo Architecture](shared/discoGo.png)
 
 ## Features
 
