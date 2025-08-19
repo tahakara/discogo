@@ -1,47 +1,61 @@
 package routes
 
 import (
-	"discogo/internal/api/responses"
-	rm "discogo/internal/api/responses/responseMessages"
-	cfg "discogo/internal/config"
-	lg "discogo/internal/logger"
-	lgm "discogo/internal/logger/messages"
-	"discogo/internal/memcached"
-	"encoding/json"
+	"fmt"
 	"net/http"
+	"time"
+
+	env "github.com/tahakara/discogo/internal/config"
+	"github.com/tahakara/discogo/internal/logger"
+	redisclient "github.com/tahakara/discogo/internal/redis"
+	"github.com/tahakara/discogo/internal/utils"
 )
 
-func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+type HealthStatus string
 
-	memcachedAddr, err := cfg.GetMemcachedServerAddr()
+const (
+	StatusHealthy   HealthStatus = "healthy"
+	StatusUnhealthy HealthStatus = "unhealthy"
+)
+
+type HealthCheckResponse struct {
+	Status HealthStatus `json:"status"`
+}
+
+func _startRedisService() redisclient.Client {
+	startTime := time.Now()
+	addr := env.GetRedisServerAddr()
+	password := env.GetRedisPassword() // Şifre yoksa "" döndürsün
+	db := env.GetRedisDB()             // Örn: 0
+
+	client := redisclient.New(addr, password, db)
+	err := client.Ping()
+
 	if err != nil {
-		lg.Error(lgm.ErrorMemcachedFailedToRetrieveServerAddress)
+		logger.Error(fmt.Sprintf("Redis connection failed: %v", err), time.Since(startTime))
+		return nil
+	}
+	logger.Info(fmt.Sprintf("Redis connected to %s", addr), time.Since(startTime))
+	return client
+}
 
-		w.WriteHeader(http.StatusInternalServerError)
-		resp := responses.NewErrorResponse(
-			lgm.ErrorMemcachedFailedToRetrieveServerAddress,
-			"")
-
-		json.NewEncoder(w).Encode(resp)
+// HealthCheck godoc
+// @Summary      Health check endpoint
+// @Description  Returns the health status of the API and Redis connection
+// @Tags         DiscoGo
+// @Produce      json
+// @Success      200  {object}  HealthCheckResponse
+// @Failure      500  {object}  HealthCheckResponse
+// @Router       /disco/health [get]
+func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	client := _startRedisService()
+	if client == nil {
+		utils.WriteJSONResponse(w, http.StatusInternalServerError, HealthCheckResponse{Status: StatusUnhealthy})
 		return
 	}
+	client.Close()
+	logger.HealthCheck("ok", time.Since(startTime))
 
-	newMemcachedClient := memcached.NewMemcachedClient(memcachedAddr)
-	if err := newMemcachedClient.Ping(); err != nil {
-		lg.Error(lgm.ErrorMemcachedPingFailed)
-		w.WriteHeader(http.StatusInternalServerError)
-		resp := responses.NewErrorResponse(
-			rm.ServiceHealthCheckFailed,
-			"",
-		)
-		json.NewEncoder(w).Encode(resp)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	resp := responses.NewSuccessResponse(
-		rm.ServiceHealthCheckSuccess,
-	)
-	json.NewEncoder(w).Encode(resp)
+	utils.WriteJSONResponse(w, http.StatusOK, HealthCheckResponse{Status: StatusHealthy})
 }

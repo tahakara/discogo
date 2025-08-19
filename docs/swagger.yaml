@@ -1,0 +1,437 @@
+definitions:
+  requestdto.RegisterRequestDTO:
+    properties:
+      addr4:
+        type: string
+      addr6:
+        type: string
+      cluster:
+        type: string
+      instanceID:
+        type: string
+      name:
+        maxLength: 64
+        minLength: 3
+        type: string
+      networkDomain:
+        type: string
+      networkID:
+        type: string
+      port4:
+        maximum: 65535
+        minimum: 1
+        type: integer
+      port6:
+        maximum: 65535
+        minimum: 1
+        type: integer
+      provider:
+        type: string
+      region:
+        type: string
+      subnetID:
+        type: string
+      tags:
+        additionalProperties:
+          type: string
+        type: object
+      type:
+        type: string
+      version:
+        type: string
+      zone:
+        type: string
+    required:
+    - cluster
+    - instanceID
+    - name
+    - networkDomain
+    - networkID
+    - provider
+    - region
+    - subnetID
+    - type
+    - version
+    - zone
+    type: object
+  routes.DiscoverResponse:
+    properties:
+      message:
+        type: string
+      providerTypes:
+        items:
+          type: string
+        type: array
+      serviceTypes:
+        items:
+          type: string
+        type: array
+      services:
+        items:
+          $ref: '#/definitions/routes.ServiceInfo'
+        type: array
+      status:
+        type: string
+      statusTypes:
+        items:
+          type: string
+        type: array
+    type: object
+  routes.HealthCheckResponse:
+    properties:
+      status:
+        $ref: '#/definitions/routes.HealthStatus'
+    type: object
+  routes.HealthStatus:
+    enum:
+    - healthy
+    - unhealthy
+    type: string
+    x-enum-varnames:
+    - StatusHealthy
+    - StatusUnhealthy
+  routes.HeartbeatResponse:
+    properties:
+      reason:
+        type: string
+      status:
+        type: string
+    type: object
+  routes.RegisterResponse:
+    properties:
+      health_check_cycle:
+        description: Only on success
+        type: integer
+      reason:
+        description: Only on error
+        items:
+          type: string
+        type: array
+      service_uuid:
+        description: Only on success
+        type: string
+      status:
+        description: '"success" or "error"'
+        type: string
+    type: object
+  routes.ServiceInfo:
+    properties:
+      serviceAddr:
+        type: string
+      serviceID:
+        type: string
+    type: object
+  routes.VersionResponse:
+    properties:
+      name:
+        type: string
+      version:
+        type: string
+      version_name:
+        type: string
+    type: object
+  utils.JSONResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /disco/discover:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of services filtered by query parameters such
+        as service type, provider, region, zone, network ID, subnet ID, instance ID,
+        and version. Supports pagination.
+      parameters:
+      - description: Service type to discover
+        enum:
+        - mock
+        - test
+        - perftest
+        - loadgen
+        - staging
+        - dev
+        - debug
+        - mq
+        - eventbus
+        - notify
+        - email
+        - sms
+        - push
+        - inmsg
+        - chat
+        - monitor
+        - log
+        - alert
+        - health
+        - cb
+        - lb
+        - discovery
+        - config
+        - util
+        - helper
+        - migrate
+        - cleanup
+        - archive
+        - maint
+        - other
+        - stream
+        - audio
+        - live
+        - transcode
+        - abr
+        - drm
+        - quality
+        - user
+        - auth
+        - authz
+        - profile
+        - prefs
+        - social
+        - watchlist
+        - history
+        - web
+        - mobile
+        - admin
+        - cdn
+        - assets
+        - img
+        - video
+        - catalog
+        - recommend
+        - search
+        - personal
+        - ingest
+        - metadata
+        - subtitle
+        - thumb
+        - sub
+        - billing
+        - payment
+        - pricing
+        - trial
+        - entitle
+        - revenue
+        - secgw
+        - waf
+        - fraud
+        - audit
+        - encrypt
+        - kms
+        - comply
+        - threat
+        - workflow
+        - scheduler
+        - pipeline
+        - etl
+        - batch
+        - eventproc
+        - orchestrate
+        - 3rdapi
+        - partner
+        - social
+        - paygate
+        - cdnint
+        - cloudstor
+        - tracker
+        - gw
+        - rest
+        - graphql
+        - grpc
+        - ws
+        - webhook
+        - ratelimit
+        - db
+        - analyticsdb
+        - cache
+        - file
+        - object
+        - datalake
+        - backup
+        - sync
+        - analytics
+        - rtanalytics
+        - abtest
+        - flags
+        - ml
+        - ds
+        - report
+        - metrics
+        in: query
+        name: servicetype
+        required: true
+        type: string
+      - description: Service status
+        enum:
+        - healthy
+        - unknown
+        - suspicious
+        - registered
+        - deregistered
+        in: query
+        name: status
+        type: string
+      - description: Service provider
+        enum:
+        - provider1
+        - provider2
+        - '...'
+        in: query
+        name: provider
+        type: string
+      - description: Region
+        in: query
+        name: region
+        type: string
+      - description: Zone
+        in: query
+        name: zone
+        type: string
+      - description: Network ID
+        in: query
+        name: networkid
+        type: string
+      - description: Subnet ID
+        in: query
+        name: subnetid
+        type: string
+      - description: Instance ID
+        in: query
+        name: instanceid
+        type: string
+      - description: Service version
+        in: query
+        name: version
+        type: string
+      - description: Number of results per page (1-10)
+        in: query
+        maximum: 10
+        minimum: 1
+        name: pagesize
+        type: integer
+      - description: Page offset (>= 0)
+        in: query
+        minimum: 0
+        name: pageoffset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of discovered services
+          schema:
+            $ref: '#/definitions/routes.DiscoverResponse'
+        "400":
+          description: Invalid request parameters
+          schema:
+            $ref: '#/definitions/routes.DiscoverResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/routes.DiscoverResponse'
+      summary: Discover services
+      tags:
+      - DiscoGo
+  /disco/health:
+    get:
+      description: Returns the health status of the API and Redis connection
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/routes.HealthCheckResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/routes.HealthCheckResponse'
+      summary: Health check endpoint
+      tags:
+      - DiscoGo
+  /disco/heartbeat:
+    get:
+      consumes:
+      - application/json
+      description: Checks the health of a service by UUID and updates its status in
+        Redis.
+      parameters:
+      - description: Service UUID
+        in: query
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/routes.HeartbeatResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/routes.HeartbeatResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/routes.HeartbeatResponse'
+      summary: Heartbeat endpoint
+      tags:
+      - DiscoGo
+  /disco/register:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new service instance with the discovery system.
+      parameters:
+      - description: Service registration payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requestdto.RegisterRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/routes.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/routes.RegisterResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/routes.RegisterResponse'
+      summary: Register a new service
+      tags:
+      - DiscoGo
+  /disco/version:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the version information of the service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/routes.VersionResponse'
+        "406":
+          description: Not Acceptable
+          schema:
+            $ref: '#/definitions/utils.JSONResponse'
+      summary: Get service version
+      tags:
+      - DiscoGo
+swagger: "2.0"

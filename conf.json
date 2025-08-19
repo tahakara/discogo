@@ -1,0 +1,655 @@
+{
+  "info": {
+    "version": "1.0",
+    "description": "Configuration for service types and their respective services in the system."
+  },
+  "providers": {
+    "aws":    { "name": "Amazon Web Services", "short": "aws" },
+    "gcp":    { "name": "Google Cloud Platform", "short": "gcp" },
+    "azure":  { "name": "Microsoft Azure", "short": "azure" },
+    "ibm":    { "name": "IBM Cloud", "short": "ibm" },
+    "oracle": { "name": "Oracle Cloud", "short": "oracle" },
+    "do":     { "name": "DigitalOcean", "short": "do" },
+    "alibaba":{ "name": "Alibaba Cloud", "short": "alibaba" },
+    "tencent":{ "name": "Tencent Cloud", "short": "tencent" },
+    "on_prem":{ "name": "On Premises", "short": "on_prem" },
+    "other":  { "name": "Other", "short": "other" }
+  },
+  "service_types": {
+    "api": {
+      "name": "API Services",
+      "services": [
+        {
+          "name": "API Gateway",
+          "short": "gw",
+          "description": "Main entry point for all API calls"
+        },
+        {
+          "name": "REST API",
+          "short": "rest",
+          "description": "RESTful web services"
+        },
+        {
+          "name": "GraphQL API",
+          "short": "graphql",
+          "description": "GraphQL query interface"
+        },
+        {
+          "name": "gRPC Service",
+          "short": "grpc",
+          "description": "High performance RPC framework"
+        },
+        {
+          "name": "WebSocket",
+          "short": "ws",
+          "description": "Real-time bidirectional communication"
+        },
+        {
+          "name": "Webhook Handler",
+          "short": "webhook",
+          "description": "HTTP callback handler"
+        },
+        {
+          "name": "Rate Limiter",
+          "short": "ratelimit",
+          "description": "API rate limiting service"
+        }
+      ]
+    },
+    "frontend": {
+      "name": "Frontend & UI Services",
+      "services": [
+        {
+          "name": "Web Frontend",
+          "short": "web",
+          "description": "Main web application"
+        },
+        {
+          "name": "Mobile API",
+          "short": "mobile",
+          "description": "Mobile app backend"
+        },
+        {
+          "name": "Admin Panel",
+          "short": "admin",
+          "description": "Administrative interface"
+        },
+        {
+          "name": "CDN",
+          "short": "cdn",
+          "description": "Content delivery network"
+        },
+        {
+          "name": "Asset Server",
+          "short": "assets",
+          "description": "Static asset serving"
+        },
+        {
+          "name": "Image Service",
+          "short": "img",
+          "description": "Image processing and serving"
+        },
+        {
+          "name": "Video Service",
+          "short": "video",
+          "description": "Video processing and streaming"
+        }
+      ]
+    },
+    "content": {
+      "name": "Content & Media Services",
+      "services": [
+        {
+          "name": "Content Catalog",
+          "short": "catalog",
+          "description": "Content metadata and catalog"
+        },
+        {
+          "name": "Recommendation Engine",
+          "short": "recommend",
+          "description": "ML-based content recommendations"
+        },
+        {
+          "name": "Search Service",
+          "short": "search",
+          "description": "Content search and indexing"
+        },
+        {
+          "name": "Personalization",
+          "short": "personal",
+          "description": "User personalization engine"
+        },
+        {
+          "name": "Content Ingestion",
+          "short": "ingest",
+          "description": "Content upload and processing"
+        },
+        {
+          "name": "Metadata Service",
+          "short": "metadata",
+          "description": "Content metadata management"
+        },
+        {
+          "name": "Subtitle Service",
+          "short": "subtitle",
+          "description": "Subtitle generation and serving"
+        },
+        {
+          "name": "Thumbnail Service",
+          "short": "thumb",
+          "description": "Thumbnail generation"
+        }
+      ]
+    },
+    "streaming": {
+      "name": "Streaming & Media",
+      "services": [
+        {
+          "name": "Video Streaming",
+          "short": "stream",
+          "description": "Video streaming service"
+        },
+        {
+          "name": "Audio Streaming",
+          "short": "audio",
+          "description": "Audio streaming service"
+        },
+        {
+          "name": "Live Streaming",
+          "short": "live",
+          "description": "Live video streaming"
+        },
+        {
+          "name": "Transcoding",
+          "short": "transcode",
+          "description": "Video/audio format conversion"
+        },
+        {
+          "name": "ABR Service",
+          "short": "abr",
+          "description": "Adaptive bitrate streaming"
+        },
+        {
+          "name": "DRM Service",
+          "short": "drm",
+          "description": "Digital rights management"
+        },
+        {
+          "name": "Quality Service",
+          "short": "quality",
+          "description": "Streaming quality optimization"
+        }
+      ]
+    },
+    "user": {
+      "name": "User Management",
+      "services": [
+        {
+          "name": "User Service",
+          "short": "user",
+          "description": "User profile management"
+        },
+        {
+          "name": "Authentication",
+          "short": "auth",
+          "description": "User authentication"
+        },
+        {
+          "name": "Authorization",
+          "short": "authz",
+          "description": "Access control and permissions"
+        },
+        {
+          "name": "Profile Service",
+          "short": "profile",
+          "description": "User profile data"
+        },
+        {
+          "name": "Preferences",
+          "short": "prefs",
+          "description": "User preferences and settings"
+        },
+        {
+          "name": "Social Service",
+          "short": "social",
+          "description": "Social features and connections"
+        },
+        {
+          "name": "Watchlist",
+          "short": "watchlist",
+          "description": "User watchlist management"
+        },
+        {
+          "name": "Viewing History",
+          "short": "history",
+          "description": "User viewing history"
+        }
+      ]
+    },
+    "subscription": {
+      "name": "Subscription & Billing",
+      "services": [
+        {
+          "name": "Subscription",
+          "short": "sub",
+          "description": "Subscription management"
+        },
+        {
+          "name": "Billing",
+          "short": "billing",
+          "description": "Billing and invoicing"
+        },
+        {
+          "name": "Payment",
+          "short": "payment",
+          "description": "Payment processing"
+        },
+        {
+          "name": "Pricing",
+          "short": "pricing",
+          "description": "Dynamic pricing service"
+        },
+        {
+          "name": "Trial Management",
+          "short": "trial",
+          "description": "Free trial management"
+        },
+        {
+          "name": "Entitlement",
+          "short": "entitle",
+          "description": "Content access entitlements"
+        },
+        {
+          "name": "Revenue",
+          "short": "revenue",
+          "description": "Revenue tracking and analytics"
+        }
+      ]
+    },
+    "data": {
+      "name": "Data & Storage",
+      "services": [
+        {
+          "name": "Primary Database",
+          "short": "db",
+          "description": "Main application database"
+        },
+        {
+          "name": "Analytics DB",
+          "short": "analyticsdb",
+          "description": "Analytics and reporting database"
+        },
+        {
+          "name": "Cache Service",
+          "short": "cache",
+          "description": "In-memory caching"
+        },
+        {
+          "name": "File Storage",
+          "short": "file",
+          "description": "File storage service"
+        },
+        {
+          "name": "Object Storage",
+          "short": "object",
+          "description": "Object storage (S3-like)"
+        },
+        {
+          "name": "Data Lake",
+          "short": "datalake",
+          "description": "Big data storage"
+        },
+        {
+          "name": "Backup Service",
+          "short": "backup",
+          "description": "Data backup and recovery"
+        },
+        {
+          "name": "Data Sync",
+          "short": "sync",
+          "description": "Data synchronization"
+        }
+      ]
+    },
+    "messaging": {
+      "name": "Messaging & Communication",
+      "services": [
+        {
+          "name": "Message Queue",
+          "short": "mq",
+          "description": "Asynchronous message processing"
+        },
+        {
+          "name": "Event Bus",
+          "short": "eventbus",
+          "description": "Event-driven architecture"
+        },
+        {
+          "name": "Notification Hub",
+          "short": "notify",
+          "description": "Centralized notifications"
+        },
+        {
+          "name": "Email Service",
+          "short": "email",
+          "description": "Email sending service"
+        },
+        {
+          "name": "SMS Service",
+          "short": "sms",
+          "description": "SMS messaging"
+        },
+        {
+          "name": "Push Notification",
+          "short": "push",
+          "description": "Mobile push notifications"
+        },
+        {
+          "name": "In-App Messaging",
+          "short": "inmsg",
+          "description": "In-application messaging"
+        },
+        {
+          "name": "Chat Service",
+          "short": "chat",
+          "description": "Real-time chat"
+        }
+      ]
+    },
+    "analytics": {
+      "name": "Analytics & Intelligence",
+      "services": [
+        {
+          "name": "Analytics Engine",
+          "short": "analytics",
+          "description": "Data analytics processing"
+        },
+        {
+          "name": "Real-time Analytics",
+          "short": "rtanalytics",
+          "description": "Real-time data processing"
+        },
+        {
+          "name": "A/B Testing",
+          "short": "abtest",
+          "description": "Experimentation platform"
+        },
+        {
+          "name": "Feature Flags",
+          "short": "flags",
+          "description": "Feature flag management"
+        },
+        {
+          "name": "ML Pipeline",
+          "short": "ml",
+          "description": "Machine learning pipeline"
+        },
+        {
+          "name": "Data Science",
+          "short": "ds",
+          "description": "Data science workbench"
+        },
+        {
+          "name": "Reporting",
+          "short": "report",
+          "description": "Business reporting"
+        },
+        {
+          "name": "Metrics",
+          "short": "metrics",
+          "description": "Application metrics"
+        }
+      ]
+    },
+    "operations": {
+      "name": "Operations & Infrastructure",
+      "services": [
+        {
+          "name": "Monitoring",
+          "short": "monitor",
+          "description": "System monitoring"
+        },
+        {
+          "name": "Logging",
+          "short": "log",
+          "description": "Centralized logging"
+        },
+        {
+          "name": "Alerting",
+          "short": "alert",
+          "description": "Alert management"
+        },
+        {
+          "name": "Health Check",
+          "short": "health",
+          "description": "Service health monitoring"
+        },
+        {
+          "name": "Circuit Breaker",
+          "short": "cb",
+          "description": "Circuit breaker pattern"
+        },
+        {
+          "name": "Load Balancer",
+          "short": "lb",
+          "description": "Load balancing"
+        },
+        {
+          "name": "Service Discovery",
+          "short": "discovery",
+          "description": "Service discovery"
+        },
+        {
+          "name": "Configuration",
+          "short": "config",
+          "description": "Configuration management"
+        }
+      ]
+    },
+    "security": {
+      "name": "Security & Compliance",
+      "services": [
+        {
+          "name": "Security Gateway",
+          "short": "secgw",
+          "description": "Security gateway"
+        },
+        {
+          "name": "WAF",
+          "short": "waf",
+          "description": "Web application firewall"
+        },
+        {
+          "name": "Fraud Detection",
+          "short": "fraud",
+          "description": "Fraud detection service"
+        },
+        {
+          "name": "Audit Service",
+          "short": "audit",
+          "description": "Audit logging"
+        },
+        {
+          "name": "Encryption",
+          "short": "encrypt",
+          "description": "Encryption service"
+        },
+        {
+          "name": "Key Management",
+          "short": "kms",
+          "description": "Key management service"
+        },
+        {
+          "name": "Compliance",
+          "short": "comply",
+          "description": "Compliance monitoring"
+        },
+        {
+          "name": "Threat Detection",
+          "short": "threat",
+          "description": "Security threat detection"
+        }
+      ]
+    },
+    "workflow": {
+      "name": "Workflow & Automation",
+      "services": [
+        {
+          "name": "Workflow Engine",
+          "short": "workflow",
+          "description": "Business process automation"
+        },
+        {
+          "name": "Job Scheduler",
+          "short": "scheduler",
+          "description": "Task scheduling"
+        },
+        {
+          "name": "Data Pipeline",
+          "short": "pipeline",
+          "description": "Data processing pipeline"
+        },
+        {
+          "name": "ETL Service",
+          "short": "etl",
+          "description": "Extract, transform, load"
+        },
+        {
+          "name": "Batch Processing",
+          "short": "batch",
+          "description": "Batch job processing"
+        },
+        {
+          "name": "Event Processing",
+          "short": "eventproc",
+          "description": "Complex event processing"
+        },
+        {
+          "name": "Orchestration",
+          "short": "orchestrate",
+          "description": "Service orchestration"
+        }
+      ]
+    },
+    "external": {
+      "name": "External Integrations",
+      "services": [
+        {
+          "name": "Third Party API",
+          "short": "3rdapi",
+          "description": "External API integration"
+        },
+        {
+          "name": "Partner Integration",
+          "short": "partner",
+          "description": "Business partner integration"
+        },
+        {
+          "name": "Social Login",
+          "short": "social",
+          "description": "Social media authentication"
+        },
+        {
+          "name": "Payment Gateway",
+          "short": "paygate",
+          "description": "External payment processing"
+        },
+        {
+          "name": "CDN Integration",
+          "short": "cdnint",
+          "description": "CDN service integration"
+        },
+        {
+          "name": "Cloud Storage",
+          "short": "cloudstor",
+          "description": "Cloud storage integration"
+        },
+        {
+          "name": "Analytics Tracker",
+          "short": "tracker",
+          "description": "External analytics tracking"
+        }
+      ]
+    },
+    "development": {
+      "name": "Development & Testing",
+      "services": [
+        {
+          "name": "Mock Service",
+          "short": "mock",
+          "description": "Service mocking for testing"
+        },
+        {
+          "name": "Test Runner",
+          "short": "test",
+          "description": "Automated testing"
+        },
+        {
+          "name": "Performance Test",
+          "short": "perftest",
+          "description": "Performance testing"
+        },
+        {
+          "name": "Load Generator",
+          "short": "loadgen",
+          "description": "Load testing"
+        },
+        {
+          "name": "Staging",
+          "short": "staging",
+          "description": "Staging environment service"
+        },
+        {
+          "name": "Development",
+          "short": "dev",
+          "description": "Development environment"
+        },
+        {
+          "name": "Debug Service",
+          "short": "debug",
+          "description": "Debugging utilities"
+        }
+      ]
+    },
+    "utility": {
+      "name": "Utility & Support",
+      "services": [
+        {
+          "name": "Utility Service",
+          "short": "util",
+          "description": "General utility functions"
+        },
+        {
+          "name": "Helper Service",
+          "short": "helper",
+          "description": "Helper functions"
+        },
+        {
+          "name": "Migration",
+          "short": "migrate",
+          "description": "Data migration service"
+        },
+        {
+          "name": "Cleanup Service",
+          "short": "cleanup",
+          "description": "Data cleanup and maintenance"
+        },
+        {
+          "name": "Archive Service",
+          "short": "archive",
+          "description": "Data archiving"
+        },
+        {
+          "name": "Maintenance",
+          "short": "maint",
+          "description": "System maintenance"
+        },
+        {
+          "name": "Other",
+          "short": "other",
+          "description": "Miscellaneous services"
+        }
+      ]
+    }
+  }
+}

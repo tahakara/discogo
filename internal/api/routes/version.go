@@ -1,49 +1,42 @@
 package routes
 
 import (
-	"discogo/internal/api/responses"
-	rm "discogo/internal/api/responses/responseMessages"
-	cfg "discogo/internal/config"
-	lg "discogo/internal/logger"
-	"encoding/json"
 	"net/http"
+
+	env "github.com/tahakara/discogo/internal/config"
+	"github.com/tahakara/discogo/internal/utils"
 )
 
+type VersionResponse struct {
+	Name        string `json:"name"`
+	Version     string `json:"version"`
+	VersionName string `json:"versionName"`
+}
+
+// VersionHandler godoc
+// @Summary      Get service version
+// @Description  Retrieves the version information of the service
+// @Tags         DiscoGo
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} VersionResponse
+// @Failure      406 {object} utils.JSONResponse
+// @Router       /disco/version [get]
 func VersionHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+	appName := env.GetDiscoGoName()
+	appVersion := env.GetDiscoGoVersion()
+	appVersionName := env.GetDiscoGoVersionName()
 
-	version, verErr := cfg.GetDiscoGoVersion()
-	appName, appErr := cfg.GetDiscoGoName()
-	versionName, verNameErr := cfg.GetDiscoGoVersionName()
-
-	switch {
-	case verErr != nil:
-		lg.Error(verErr.Error())
-		resp := responses.NewErrorResponse(
-			rm.MessageR(rm.FailedToGetTemplate, "version"),
-			"")
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(resp)
-		return
-	case appErr != nil:
-		lg.Error(appErr.Error())
-		resp := responses.NewErrorResponse(
-			rm.MessageR(rm.FailedToGetTemplate, "app name"),
-			"")
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(resp)
-		return
-	case verNameErr != nil:
-		lg.Error(verNameErr.Error())
-		resp := responses.NewErrorResponse(
-			rm.MessageR(rm.FailedToGetTemplate, "version name"),
-			"")
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(resp)
+	if appName == "" || appVersion == "" || appVersionName == "" {
+		utils.WriteJSONResponse(w, http.StatusNotAcceptable, nil)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	resp := responses.NewVersionResponse(appName, version, versionName)
-	json.NewEncoder(w).Encode(resp)
+	resp := VersionResponse{
+		Name:        appName,
+		Version:     appVersion,
+		VersionName: appVersionName,
+	}
+
+	utils.WriteJSONResponse(w, http.StatusOK, resp)
 }

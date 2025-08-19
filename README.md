@@ -1,103 +1,82 @@
-# DiscoGo Service Discovery Tool
+# DiscoGo
 
-<p align="center">
-  <img src="discoGo.png" alt="DiscoGo Logo" width="200"/>
-</p>
+DiscoGo is a service discovery and health monitoring system written in Go. It provides RESTful APIs for service registration, heartbeat, discovery, and deregistration, using Redis as a backend.
 
-DiscoGo is a service discovery tool built with Go and Memcached. It provides a simple, reliable, and configurable HTTP API for service registration, deregistration, and discovery in distributed environments.
-
-> **Note:**  
-> DiscoGo requires a running Memcached server. Please ensure Memcached is installed and accessible before starting the application.
-
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
+![DiscoGo Architecture](./shared/discogo-architecture.png)
 
 ## Features
 
-- Memcached-based service discovery
-- Easy configuration via environment variables (`.env` support)
-- Colored and detailed logging (configurable)
-- Standardized JSON responses for all endpoints
-- Health, version, registration, deregistration, and discovery HTTP API
+- Service registration with metadata
+- Heartbeat endpoint for health checks
+- Service discovery with filtering and pagination
+- Deregistration of services
+- Health check for API and Redis
+- Swagger/OpenAPI documentation
 
-## Installation
+## Project Structure
 
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/tahakara/discogo.git
-   cd discogo
-   ```
+```
+.
+├── cmd/                # Application entrypoint
+│   └── mian.go
+├── docs/               # Swagger/OpenAPI docs
+├── internal/
+│   ├── api/            # HTTP API handlers, DTOs, validators
+│   ├── config/         # Configuration loading
+│   ├── logger/         # Logging utilities
+│   ├── redis/          # Redis client and helpers
+│   ├── service/        # Service startup logic
+│   └── utils/          # Utility functions
+├── shared/             # Shared assets (architecture diagram, etc.)
+├── conf.json           # Service types and providers config
+├── .env                # Environment variables (development)
+├── .env-prod           # Environment variables (production)
+├── go.mod
+├── go.sum
+└── README.md
+```
 
-2. **Install Go** (if not already installed):  
-   [Download Go](https://golang.org/dl/)
+## Getting Started
 
-3. **Install dependencies:**
+### Prerequisites
+
+- Go 1.25+
+- Redis server
+
+### Setup
+
+1. Clone the repository.
+2. Copy `.env` or `.env-prod` and adjust environment variables as needed.
+3. Install dependencies:
+
    ```sh
    go mod tidy
    ```
 
-4. **Install and run Memcached:**  
-   Make sure Memcached is running and accessible at the address specified in your `.env` file (default: `127.0.0.1:11211`).  
-   [Memcached Download & Docs](https://memcached.org/)
+4. Run the application:
+
+   ```sh
+   go run ./cmd/mian.go
+   ```
+
+### API Documentation
+
+Swagger UI is available at `/swagger/index.html` when the server is running.
+
+## Main Endpoints
+
+- `POST /disco/register` — Register a new service
+- `POST /disco/heartbeat/{uuid}` — Send heartbeat for a service
+- `GET  /disco/discover` — Discover services
+- `POST /deregister` — Deregister a service
+- `GET  /disco/health` — Health check
+- `GET  /disco/version` — Version info
 
 ## Configuration
 
-A sample production environment file is provided as `.env-prod`.  
-**To configure the application, rename `.env-prod` to `.env` and adjust the values as needed:**
-
-```sh
-mv .env-prod .env
-```
-
-Example `.env` content:
-
-```
-DISCOGO_NAME=discoGo
-DISCOGO_VERSION=1.0.0
-DISCOGO_VERSION_NAME=Astrid
-DISCOGO_LOG_COLOR=true
-
-DISCOGO_HTTP_HOST=localhost
-DISCOGO_HTTP_PORT=8080
-
-MEMCACHED_HOST=127.0.0.1
-MEMCACHED_PORT=11211
-```
-
-## Usage
-
-To start the service:
-
-```sh
-go run cmd/main.go
-```
-
-The application will read configuration from the `.env` file. If required variables are missing, it will log an error and exit.
-
-## API Endpoints
-
-| Method | Endpoint      | Description                |
-|--------|--------------|----------------------------|
-| GET    | /health      | Health check               |
-| GET    | /version     | Returns version info       |
-| GET    | /heartbeat   | Service uptime             |
-| GET    | /discover    | Discover registered service|
-| POST   | /register    | Register a new service     |
-| POST   | /deregister  | Deregister a service       |
-
-All responses follow a standard JSON structure.
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for improvements or new features.
+- Service types and providers are defined in [`conf.json`](conf.json).
+- Environment variables are loaded from `.env` or `.env-prod`.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+MIT
